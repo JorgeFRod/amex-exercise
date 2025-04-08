@@ -21,6 +21,9 @@ Fetches all events with built-in retry logic on failure.
     * Uses the fetchWithRetry helper (up to 3 retries with backoff)
     * Requests data from http://event.com/getEvents
     * Returns the events data
+    * Detects when the external service is consistently failing (3+ failures within a 30-second window)
+    * I was not able to get the gradual retry logic going in time. I'd probably clean it up by trying to use the helper method I had created using the falloffInterval...
+    * Was close but not complete :(
 
 ### GET /getEventsByUserId/:id
 Fetches all events for a given user ID.
@@ -34,3 +37,4 @@ I was able to make a series of improvements on the overall performance and relia
 
 1. Ensure that we were fetching all of the events for a user in parallel by resorting to promise logic and specifically Promise.all to ensure that we'd be fetching for all of the various events in parallel
 2. Implemented some retry logic in the `getEvent` method to ensure that when the API was being overloaded we specifically handled retries and waited for a configurable amount of time (defaults to 500ms) before trying again
+3. Added the backoff logic to not overwhelm the server for `addEvent` didn't finish in the alloted time though
