@@ -6,11 +6,13 @@ This is achieved by persisting users and events and using various tools to bind 
 The public routes are as follows
 ### GET /getUsers
 Fetches a list of users from an external service.
- * Makes a GET request to http://event.com/getUsers
- * Returns the parsed JSON response to the client
 
+    * Makes a GET request to http://event.com/getUsers
+    * Returns the parsed JSON response to the client
+    
 ### POST /addEvent
 Adds a new event by forwarding a request to an external service.
+
     * Generates a unique id using the current timestamp
     * Sends a POST request to http://event.com/addEvent with the request body and new id
     * Returns the response from the external service
@@ -18,6 +20,7 @@ Adds a new event by forwarding a request to an external service.
 
 ### GET /getEvents
 Fetches all events with built-in retry logic on failure.
+
     * Uses the fetchWithRetry helper (up to 3 retries with backoff)
     * Requests data from http://event.com/getEvents
     * Returns the events data
@@ -27,6 +30,7 @@ Fetches all events with built-in retry logic on failure.
 
 ### GET /getEventsByUserId/:id
 Fetches all events for a given user ID.
+
     * Calls http://event.com/getUserById/:id to retrieve user details
     * Extracts events array from the user object
     * Uses Promise.all to fetch all related events in parallel from http://event.com/getEventById/:eventId
